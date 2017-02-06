@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Motion Monitor</title>
+
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <script src="https://cdn.jsdelivr.net/g/d3js@3.5.17,rickshaw@1.3.0"></script>
+    <script>if (window.module) module = window.module;</script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/rickshaw/1.3.0/rickshaw.css">
+  </head>
+  <body>
+    <h1>Motion Monitor</h1>
+    <!-- All of the Node.js APIs are available in this renderer process. -->
+    We are using Node.js <script>document.write(process.versions.node)</script>,
+    Chromium <script>document.write(process.versions.chrome)</script>,
+    Electron <script>document.write(process.versions.electron)</script>,
+    and Serialport <script>document.write(require('serialport/package').version)</script>.
+
+    <h5>Hacked together monitor for the rat tracker</h5>
+    <hr/>
+
+    <h4>YPR</h4>
+    <h4>Delta</h4>
+    <div id="yprDelta"></div>
+    <h4>Values</h4>
+    <div id="ypr"></div>
+    <hr/>
+
+    <h4>Acceleration</h4>
+    <h4>Delta</h4>
+    <div id="accelerationDelta"></div>
+    <h4>Values</h4>
+    <div id="acceleration"></div>
+    <hr/>
+
+    <h4>Debug</h4>
+    <h4>Time Delta</h4>
+    <div id="time" style="clear:both"></div>
+    <h4>Raw output</h4>
+    <div id="data1" style="width:300px; float: left;"></div>
+    <div id="data2" style="width:300px; float: left;"></div>
+  </body>
+
+  <script>
+    // You can also require other files to run in this process
+    require('./renderer.js');
+  </script>
+</html>
