@@ -1,8 +1,8 @@
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
-const source = '/dev/cu.wchusbserial1410';
-//const source = '/dev/tty.HC-05-DevB';
+//const source = '/dev/cu.wchusbserial1410';
+const source = '/dev/tty.MotionTrackerThing-DevB';
 
 //const baud = 9600; // 100ms, ? spikes due to noise
 //const baud = 38400; // 27ms, < 1 second spikes
