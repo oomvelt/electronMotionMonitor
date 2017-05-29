@@ -1,14 +1,24 @@
+// const { app } = require('electron');
+// app.on('window-all-closed', () => {
+//   app.quit()
+// })
+
+const fs = require('fs');
+
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 //const source = '/dev/cu.wchusbserial1410';
-const source = '/dev/tty.MotionTrackerThing-DevB';
+const source = '/dev/tty.MotionTrackerThingA-DevB';
+// const source = '/dev/tty.MotionTrackerThing3-DevB';
 
 //const baud = 9600; // 100ms, ? spikes due to noise
 //const baud = 38400; // 27ms, < 1 second spikes
 //const baud = 74880; // 15ms, no spikes
 const baud = 115200; // 15ms, no spikes
 //const baud = 250000; // 15ms, no spikes
+
+const file = './data_' + new Date().getTime() + '.txt';
 
 let update = 1;
 let maxPoints = 240;
@@ -24,6 +34,7 @@ let nodeDelta = {
 };
 
 console.log('renderer.js using source:', source);
+console.log('exporting data to ', file);
 
 // ypr graphs
 var yprGraph = new Rickshaw.Graph( {
@@ -131,6 +142,8 @@ device.on('data', (data) => {
     try {
       node = JSON.parse(data.substring(4));
 
+      node.timeStamp = new Date().getTime();
+
       nodeDelta = {time: node.time - lastNode.time,
         ypr: {
           x: lastNode.ypr.y - node.ypr.y,
@@ -146,6 +159,8 @@ device.on('data', (data) => {
 
       document.getElementById('data1').innerHTML = 'Node<pre>' + JSON.stringify(node, null, 2) + '</pre>';
       document.getElementById('data2').innerHTML = 'nodeDelta<pre>' + JSON.stringify(nodeDelta, null, 2) + '</pre>';
+
+      fs.appendFileSync(file, JSON.stringify(node) + "\n");
     } catch(e) {
       console.log("ERROR", e);
     }
