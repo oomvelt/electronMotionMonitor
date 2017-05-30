@@ -1,8 +1,3 @@
-// const { app } = require('electron');
-// app.on('window-all-closed', () => {
-//   app.quit()
-// })
-
 const fs = require('fs');
 
 // This file is required by the index.html file and will
@@ -19,10 +14,19 @@ const baud = 115200; // 15ms, no spikes
 //const baud = 250000; // 15ms, no spikes
 
 const file = './data_' + new Date().getTime() + '.txt';
+const write = true;
 
 let update = 1;
 let maxPoints = 240;
 let height = 50;
+
+// keyboard shortcuts
+shortcut.add("0", function() { document.forms.theForm.elements.status.value = "0"; });
+shortcut.add("1", function() { document.forms.theForm.elements.status.value = "1"; });
+shortcut.add("2", function() { document.forms.theForm.elements.status.value = "2"; });
+shortcut.add("3", function() { document.forms.theForm.elements.status.value = "3"; });
+shortcut.add("4", function() { document.forms.theForm.elements.status.value = "4"; });
+shortcut.add("5", function() { document.forms.theForm.elements.status.value = "5"; });
 
 let node = {
   ypr: {y: 0, p: 0, r: 0},
@@ -143,6 +147,7 @@ device.on('data', (data) => {
       node = JSON.parse(data.substring(4));
 
       node.timeStamp = new Date().getTime();
+      node.status = document.forms.theForm.elements.status.value;
 
       nodeDelta = {time: node.time - lastNode.time,
         ypr: {
@@ -160,7 +165,7 @@ device.on('data', (data) => {
       document.getElementById('data1').innerHTML = 'Node<pre>' + JSON.stringify(node, null, 2) + '</pre>';
       document.getElementById('data2').innerHTML = 'nodeDelta<pre>' + JSON.stringify(nodeDelta, null, 2) + '</pre>';
 
-      fs.appendFileSync(file, JSON.stringify(node) + "\n");
+      if(write) fs.appendFileSync(file, JSON.stringify(node) + "\n");
     } catch(e) {
       console.log("ERROR", e);
     }
