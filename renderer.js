@@ -20,13 +20,25 @@ let update = 1;
 let maxPoints = 240;
 let height = 50;
 
-// keyboard shortcuts
-shortcut.add("0", function() { document.forms.theForm.elements.status.value = "0"; });
-shortcut.add("1", function() { document.forms.theForm.elements.status.value = "1"; });
-shortcut.add("2", function() { document.forms.theForm.elements.status.value = "2"; });
-shortcut.add("3", function() { document.forms.theForm.elements.status.value = "3"; });
-shortcut.add("4", function() { document.forms.theForm.elements.status.value = "4"; });
-shortcut.add("5", function() { document.forms.theForm.elements.status.value = "5"; });
+for (i = 0; i <= 5; i++) {
+  shortcut.add(i + "", function(event) { 
+    var n = parseInt(event.key);
+    this.document.forms.theForm.elements.status[n].checked = true
+  }, {'type':'keydown'});
+  shortcut.add(i + "", function() { 
+    var n = parseInt(event.key);
+    this.document.forms.theForm.elements.status[n].checked = false
+  }, {'type':'keyup'});
+}
+
+
+// // keyboard shortcuts
+// shortcut.add("0", function() { document.forms.theForm.elements.status.value = "0"; });
+// shortcut.add("1", function() { document.forms.theForm.elements.status.value = "1"; });
+// shortcut.add("2", function() { document.forms.theForm.elements.status.value = "2"; });
+// shortcut.add("3", function() { document.forms.theForm.elements.status.value = "3"; });
+// shortcut.add("4", function() { document.forms.theForm.elements.status.value = "4"; });
+// shortcut.add("5", function() { document.forms.theForm.elements.status.value = "5"; });
 
 let node = {
   ypr: {y: 0, p: 0, r: 0},
@@ -147,7 +159,7 @@ device.on('data', (data) => {
       node = JSON.parse(data.substring(4));
 
       node.timeStamp = new Date().getTime();
-      node.status = document.forms.theForm.elements.status.value;
+      node.status = [].filter.call(document.forms.theForm.elements.status, (c) => c.checked).map(c => c.value);
 
       nodeDelta = {time: node.time - lastNode.time,
         ypr: {
