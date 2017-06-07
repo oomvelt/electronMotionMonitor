@@ -31,15 +31,6 @@ for (i = 0; i <= 5; i++) {
   }, {'type':'keyup'});
 }
 
-
-// // keyboard shortcuts
-// shortcut.add("0", function() { document.forms.theForm.elements.status.value = "0"; });
-// shortcut.add("1", function() { document.forms.theForm.elements.status.value = "1"; });
-// shortcut.add("2", function() { document.forms.theForm.elements.status.value = "2"; });
-// shortcut.add("3", function() { document.forms.theForm.elements.status.value = "3"; });
-// shortcut.add("4", function() { document.forms.theForm.elements.status.value = "4"; });
-// shortcut.add("5", function() { document.forms.theForm.elements.status.value = "5"; });
-
 let node = {
   ypr: {y: 0, p: 0, r: 0},
   acceleration: {x:0, y:0, z: 0}
@@ -159,7 +150,11 @@ device.on('data', (data) => {
       node = JSON.parse(data.substring(4));
 
       node.timeStamp = new Date().getTime();
-      node.status = [].filter.call(document.forms.theForm.elements.status, (c) => c.checked).map(c => c.value);
+      node.status = { "t0": 0, "t1": 0, "t2": 0, "t3": 0, "t4": 0, "t5": 0 };
+
+      document.forms.theForm.elements.status.forEach((c, i) => {
+        if (c.checked) node.status['t' + i] = 1;
+      });
 
       nodeDelta = {time: node.time - lastNode.time,
         ypr: {
