@@ -171,6 +171,7 @@ device.on('data', (data) => {
 
       document.getElementById('data1').innerHTML = 'Node<pre>' + JSON.stringify(node, null, 2) + '</pre>';
       document.getElementById('data2').innerHTML = 'nodeDelta<pre>' + JSON.stringify(nodeDelta, null, 2) + '</pre>';
+      document.getElementById('timestamp').innerHTML = node.timeStamp;
 
       if(write) fs.appendFileSync(file, JSON.stringify(node) + "\n");
     } catch(e) {
